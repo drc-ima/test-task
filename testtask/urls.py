@@ -22,6 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Reservations.as_view(), name='reservations'),
     path('reservation/add/', AddReservation.as_view(), name='add-reservation'),
-    path('rental/add/', add_rental, name='add-rental'),
-    path('rental/details/<int:id>/', rental_details, name='rental-details')
+    path('rental/add/', add_rental, name='add-rental')
 ]

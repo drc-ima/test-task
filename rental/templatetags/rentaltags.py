@@ -6,6 +6,7 @@ from rental.models import Reservation
 register = Library()
 
 
+# using template tags to get previous reservation of each reservation
 @register.simple_tag
 def previous_reservation(reservation_id):
 
