@@ -1,0 +1,35 @@
+{% load rentaltags %}
+<h3>Reservations</h3>
+<hr>
+
+<a href="{%url 'add-rental'%}">Add Rental</a>
+<a href="{%url 'add-reservation'%}">Add Reservation</a>
+<hr>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Rental Name</th>
+            <th>ID</th>
+            <th>CheckIn</th>
+            <th>CheckOut</th>
+            <th>Previous Reservation, ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+            {% previous_reservation object.id as previous %}
+            <tr>
+                <td>{{object.rental.name}}</td>
+                <td>{{object.id}}</td>
+                <td>{{object.checkin | safe}}</td>
+                <td>{{object.checkout | safe}}</td>
+                <th>{{ previous}}</th>
+            </tr>
+        {% empty %}
+            <tr>
+                <td style="text-align: center" colspan="5">No Reservations added yet!</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
