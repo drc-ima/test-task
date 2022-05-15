@@ -14,17 +14,18 @@
             <th>CheckIn</th>
             <th>CheckOut</th>
             <th>Previous Reservation, ID</th>
+            {% comment %} <th>Additions</th> {% endcomment %}
         </tr>
     </thead>
     <tbody>
         {% for object in object_list %}
-            {% previous_reservation object.id as previous %}
+
             <tr>
                 <td>{{object.rental.name}}</td>
                 <td>{{object.id}}</td>
                 <td>{{object.checkin | safe}}</td>
                 <td>{{object.checkout | safe}}</td>
-                <th>{{ previous}}</th>
+                <th>{{object.previous}}</th>
             </tr>
         {% empty %}
             <tr>

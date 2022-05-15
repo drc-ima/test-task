@@ -1,9 +1,12 @@
+from re import sub
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 from rental.forms import ReservationForm
 from rental.models import Rental, Reservation
+from django.db.models import OuterRef, Value, CharField
+from django.db.models.functions import Coalesce
 
 # Create your views here.
 
@@ -29,7 +32,10 @@ def add_rental(request):
 # list of reservation view using a generic class based view
 class Reservations(ListView):
     template_name = 'reservation/list.html'
-    queryset = Reservation.objects.all()
+    sub_query = Reservation.objects.filter(rental=OuterRef('rental'), id__lt=OuterRef('pk')).order_by('-id')
+
+    # using the sub query as annotate
+    queryset = Reservation.objects.all().annotate(previous=Coalesce(sub_query.values('id')[:1], Value('-'), output_field=CharField()))
 
 
 # add new reservation
