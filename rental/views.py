@@ -32,7 +32,12 @@ def add_rental(request):
 # list of reservation view using a generic class based view
 class Reservations(ListView):
     template_name = 'reservation/list.html'
-    sub_query = Reservation.objects.filter(rental=OuterRef('rental'), id__lt=OuterRef('pk')).order_by('-id')
+
+    # sub query using id for previous reservation
+    # sub_query = Reservation.objects.filter(rental=OuterRef('rental'), id__lt=OuterRef('pk')).order_by('-id')
+
+    # sub query using checkin date for previous reservation
+    sub_query = Reservation.objects.filter(rental=OuterRef('rental'), checkin__lt=OuterRef('checkin')).order_by('-checkin')
 
     # using the sub query as annotate
     queryset = Reservation.objects.all().annotate(previous=Coalesce(sub_query.values('id')[:1], Value('-'), output_field=CharField()))
